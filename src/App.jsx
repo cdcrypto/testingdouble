@@ -14,7 +14,7 @@ function App() {
         const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id;
 
         fetch('https://77nypb.buildship.run/id', {
-          method: 'POST',
+          method: 'FETCH',
           headers: {
             'Content-Type': 'application/json',
           },

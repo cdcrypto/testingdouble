@@ -8,7 +8,7 @@ function App() {
 
   // Equivalent to Vue's onMounted
   const fetchWalletInfo = () => {
-    if (window.Telegram && window.Telegram.WebApp) {
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
       const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id;
   
       fetch('https://77nypb.buildship.run/id', {

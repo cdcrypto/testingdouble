@@ -51,7 +51,13 @@ function App() {
 
   return (
     <div className={containerClasses}>
-      <div className="flex justify-center pt-6">
+      <div className="flex justify-between items-center p-4">
+        <span className="text-xl font-semibold">Wallet Info</span>
+        <button onClick={fetchWalletInfo} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          Refresh
+        </button>
+      </div>
+      <div className="flex justify-center pt-2">
         <img src="https://placehold.co/128" alt="QR Code" className={qrCodeClasses} />
       </div>
       <div className={contentClasses}>
@@ -73,6 +79,3 @@ function App() {
       </div>
     </div>
   );
-}
-
-export default App;

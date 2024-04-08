@@ -12,7 +12,7 @@ function App() {
       const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id;
   
       fetch('https://77nypb.buildship.run/id', {
-        method: 'POST', // Changed from 'FETCH' to 'POST'
+        method: 'GET', // Changed from 'FETCH' to 'POST'
         headers: {
           'Content-Type': 'application/json',
         },

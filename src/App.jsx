@@ -3,35 +3,45 @@ import './App.css';
 
 function App() {
   const [walletAddress, setWalletAddress] = useState('Account');
-  const [walletBalance, setWalletBalance] = useState('0');
-  const [pendingPayout, setPendingPayout] = useState('0');
+  const [walletBalance, setWalletBalance] = useState('Wallet Balance: $0');
+  const [pendingPayout, setPendingPayout] = useState('Pending Payout: $0');
 
   // Equivalent to Vue's onMounted
-  const fetchWalletInfo = () => {
+  const fetchWalletInfo = async () => { // Make this function async
+    // Ensure the Telegram WebApp API is initialized and user data is accessible
     if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
       const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id;
   
-      fetch('https://77nypb.buildship.run/id', {
-        method: 'GET', // Changed from 'FETCH' to 'POST'
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ telegramId }), // Sending the Telegram ID in the request body
-      })
-      .then(response => response.json())
-      .then(data => {
+      try {
+        // Sending a POST request to the backend including the Telegram user's ID
+        const response = await fetch('https://77nypb.buildship.run/id', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ telegramId }), // Sending the Telegram ID in the request body
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
         setWalletAddress(`Account ${data.walletAddress}`);
         setWalletBalance(`Wallet Balance: $${data.balance}`);
         setPendingPayout(`Pending Payout: $${data.payout}`);
-      })
-      .catch(error => console.error('Error fetching wallet data:', error));
+      } catch (error) {
+        console.error('Error fetching wallet data:', error);
+      }
     } else {
       console.error('Telegram WebApp SDK not initialized or available.');
     }
   };
-  
+
   // Call fetchWalletInfo on component mount
-  fetchWalletInfo();
+  useEffect(() => {
+    fetchWalletInfo();
+  }, []); // Empty dependency array means this effect runs once on mount
   // Function to copy wallet address to clipboard
   const copyToClipboard = () => {
     navigator.clipboard.writeText(walletAddress).then(() => {
